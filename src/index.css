@@ -1,0 +1,39 @@
+@import 'https://fonts.googleapis.com/css?family=Open+Sans:300,400';
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Open Sans', sans-serif;
+  background: rgba(0,0,0,.05);
+}
+
+.box {
+  width: 350px;
+  height: 452px;
+}
+
+.post .image {
+  width: 350px;
+  height: 350px;
+  flex: 0 0 350px;
+}
+
+.post .description {
+  flex: 1;
+  padding-left: 25px;
+  font-size: 25px;
+}
+
+.new-post {
+  background-color: rgba(0,0,0,0.06);
+}
+
+.image {
+    background-size: cover;
+    background-position: center;
+    padding-bottom: 100%;
+}
+
+.add-post {
+    font-size: 150px;
+}
