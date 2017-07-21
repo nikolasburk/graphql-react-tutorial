@@ -285,9 +285,11 @@ const imageRouter = (
 
 ReactDOM.render(imageRouter, document.getElementById('root'));
 ```
-And you should see this in your browser:
+And you should see something like this in your browser:
 
 ![screen shot 2017-07-21 at 12 31 17](https://user-images.githubusercontent.com/26869552/28474840-612abf36-6e4a-11e7-9c01-b9184cb387a5.png)
+
+Unfortunately, our app is pretty dull at the moment because we don't have any posts yet. So how about we change that?
 
 ## Generating the GraphQL Endpoint and Initial Data
 #### Meet Our Schema

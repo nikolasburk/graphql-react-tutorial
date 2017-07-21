@@ -5,7 +5,7 @@ Start your GraphQL journey by creating an image board application.
 Frontend: `create-react-app` with [Apollo Client](https://github.com/apollographql/apollo-client)<br />
 Backend: GraphQL API provided by [Graphcool](https://www.graph.cool/)
 
-<!-- Place gif here -->
+<!-- Put gif here -->
 
 ## Quickstart
 Here's how you can get up and running with this project in just 5 minutes. For a more in-depth tutorial, check out the `tutorial.md` file in the root of this repository.
