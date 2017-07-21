@@ -571,6 +571,7 @@ const addMutation = gql`
 And then replace the existing export statement with this:
 ```javascript
 const UploadImageWithMutation = graphql(addMutation, {name: 'addPost'})(UploadImage)
+
 export default withRouter(UploadImageWithMutation)
 ```
 
@@ -598,6 +599,104 @@ handlePost = async () => {
   }
 }
 ```
+
+#### Final Component Files
+`ImageFeed` in `src/components/ImageFeed`:
+```javascript
+import React from 'react'
+import { Link } from 'react-router-dom'
+import Post from '../components/Post'
+import { gql, graphql } from 'react-apollo'
+
+class ImageFeed extends React.Component {
+
+  render() {
+    if (this.props.data.loading) {
+      return (
+        <div className='flex w-100 h-100 items-center justify-center pt7'>Loading...</div>
+      )
+    }
+
+    return (
+      <div className={'w-100 flex justify-center pa6'}>
+        <div className='w-100 flex flex-wrap' style={{maxWidth: 1150}}>
+          <Link to='/upload' className='ma3 box new-post br2 flex flex-column items-center justify-center ttu fw6 f20 black-30 no-underline'>
+            <div className="add-post">&#43;</div>
+          </Link>
+          {this.props.data.allPosts.map(post => (
+            <Post key={post.id} post={post} refresh={() => this.props.data.refetch()} />
+          ))}
+        </div>
+      </div>
+    )
+  }
+}
+
+const FeedQuery = gql`query allPosts {
+  allPosts(orderBy: createdAt_DESC) {
+    id
+    imageUrl
+    description
+  }
+}`
+
+export default graphql(FeedQuery)(ImageFeed)
+```
+
+`UploadImage` in `src/components/UploadImage`:
+```javascript
+import React from 'react'
+import { withRouter } from 'react-router-dom'
+import Modal from 'react-modal'
+import { gql, graphql} from 'react-apollo'
+
+class UploadImage extends React.Component {
+
+  state = {
+    description: '',
+    imageUrl: '',
+  }
+
+  render() {
+    return (
+      <Modal isOpen className="h-400 flex justify-center bg-white" contentLabel='Upload Image' onRequestClose={this.props.history.goBack}>
+        <div className='pa4 flex justify-center bg-white'>
+          <div style={{maxWidth: 400}} className=''>
+            <input className='w-100 pa3 mv2' value={this.state.imageUrl} placeholder='Image Url'
+              onChange={e => this.setState({imageUrl: e.target.value})} autoFocus />
+            <input className='w-100 pa3 mv2' value={this.state.description} placeholder='Description'
+              onChange={e => this.setState({description: e.target.value})} />
+            <button className='pa3 bg-black-10 bn dim ttu pointer' onClick={this.handlePost}>Upload</button>
+          </div>
+        </div>
+      </Modal>
+    )
+  }
+
+  handlePost = async () => {
+    const {description, imageUrl} = this.state
+    await this.props.addPost({variables: {description, imageUrl}})
+
+    window.location.pathname = '/'
+  }
+}
+
+const addMutation = gql`
+  mutation addPost($description: String!, $imageUrl: String!) {
+    createPost(description: $description, imageUrl: $imageUrl) {
+      id
+      description
+      imageUrl
+    }
+  }
+`
+
+const UploadImageWithMutation = graphql(addMutation, {name: 'addPost'})(UploadImage)
+
+export default withRouter(UploadImageWithMutation)
+```
+
+If you hadn't noticed, we never made any changes to our `Post` component in `src/components/Post.js` - so that's it!
 
 ## Conclusion
 Congrats! You've just created your own image board using `create-react-app`, Apollo Client and Graphcool's GraphQL API. If you want to reference the example code, you can find it within this repo.
